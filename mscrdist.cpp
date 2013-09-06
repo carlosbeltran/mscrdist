@@ -163,6 +163,11 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2) {
             dist_y2.at<float>(row,col) = dist_y.at<float>(row,good.at(col));
     cout << "Dist_y2 = " << endl << " " << dist_y2 << endl << endl;
 
+    Mat dist_color2 = Mat(num2,max_useful_info,CV_32FC1);
+    for (int col = 0; col < max_useful_info; col++)
+        for (int row = 0; row < num2; row++)
+            dist_color2.at<float>(row,col) = dist_color.at<float>(row,good.at(col));
+    cout << "Dist_color2 = " << endl << " " << dist_color2 << endl << endl;
     // Normalize
 
     float DEN1;
@@ -170,17 +175,16 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2) {
         DEN1 = 1;
     else
         DEN1 = matmax(dist_y2);
-
     Mat dist_y_n = dist_y / DEN1;
-
     cout << "dist_y_n = " << endl << " " << dist_y_n << endl << endl;
-    //%%normalize
-    //    if isempty(dist_y2)
-    //        DEN1 = 1;
-    //    else
-    //        DEN1 = max(dist_y2(:));
-    //end
-    //    dist_y_n{j} = dist_y./DEN1;
+
+    if (dist_color2.cols == 0)
+        DEN1 = 1;
+    else 
+        DEN1 = matmax(dist_color2);
+    Mat dist_color_n = dist_color / DEN1;
+    cout << "dist_color_n = " << endl << " " << dist_color_n << endl << endl;
+
     //if isempty(dist_color2)
     //    DEN1 = 1;
     //else
