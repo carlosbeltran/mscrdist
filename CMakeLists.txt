@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( mscrdist )
+find_package( OpenCV REQUIRED )
+add_executable( mscrdist mscrdist.cpp )
+target_link_libraries( mscrdist ${OpenCV_LIBS} )
