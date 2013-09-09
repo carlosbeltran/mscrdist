@@ -3,6 +3,9 @@
 #include <vector>
 #include <iterator>
 #include <numeric>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace cv;
 using namespace std;
@@ -233,6 +236,31 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     cout << "Final_dist_color = " << final_dist_color << endl << endl;
 }
 
+void readmat(const char * filename) {
+
+    ifstream infile;
+    infile.open(filename ,ios::in);
+
+    while(infile)
+    {
+        string s;
+        vector<float> row;
+        if(!getline(infile,s)) break;
+        istringstream ss(s);
+
+        while(ss)
+        {
+            string s;
+            if (!getline(ss,s,',')) break;
+            row.push_back((float)atof(s.c_str()));
+        }
+        cout << "-----------------";
+        copy(row.begin(), row.end(), std::ostream_iterator<float>(cout, " "));
+        cout << "-----------------";
+        cout << endl << endl;
+    }
+}
+
 int main( int argc, char** argv)
 {
     Mat image;
@@ -250,6 +278,9 @@ int main( int argc, char** argv)
         81.6056,99.6842,97.7879,76.0625,78.0827,103.0000,111.9375,111.8750,111.1667,
         63.9474,63.2949,64.8444 };
     Mat blobPos_1(1,39,CV_32FC1,&sz);
+    cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
+
+    readmat("test.txt");
 
     float sz2[54] = { 27.7,26.2,22.47445,44.625,44.5,30.88889,37.95455,44.72093,30.87097,37.975,
         39.33333,33.5625,43.72973,45.6,33.40426,34.89655,37.88235,43.36735,49.65385,
@@ -298,7 +329,7 @@ int main( int argc, char** argv)
         -14.8848,-14.6353,-0.606457,-10.8641,0.17571,-1.20265,-1.61964};
     Mat blobCol_2(3,54,CV_32FC1,&sz4);
 
-    dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
+    //dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
