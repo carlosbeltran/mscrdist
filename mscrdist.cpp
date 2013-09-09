@@ -17,7 +17,7 @@ float matmax(const Mat &themat) {
     return value;
 }
 
-void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2) {
+void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamma) {
 
     int lenDATAF = 0;
     int i = 1;
@@ -185,12 +185,13 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2) {
     Mat dist_color_n = dist_color / DEN1;
     cout << "dist_color_n = " << endl << " " << dist_color_n << endl << endl;
 
-    //if isempty(dist_color2)
-    //    DEN1 = 1;
-    //else
-    //    DEN1 = max(dist_color2(:));
-    //end
-    //    dist_color_n{j} = dist_color./DEN1;
+    //Composite distance computation
+    Mat totdist_n = Mat(num2,max_useful_info,CV_32FC1);
+    for (int col = 0; col< max_useful_info; col++)
+        for (int row = 0; row < num2; row++)
+            totdist_n.at<float>(row,col) = (gamma*dist_y_n.at<float>(row,good.at(col)) + (1 - gamma) * dist_color_n.at<float>(row,good.at(col)));
+    cout << "totdist_n = " << endl << " " << totdist_n << endl << endl;
+
 }
 
 int main( int argc, char** argv)
@@ -258,7 +259,7 @@ int main( int argc, char** argv)
         -14.8848,-14.6353,-0.606457,-10.8641,0.17571,-1.20265,-1.61964};
     Mat blobCol_2(3,54,CV_32FC1,&sz4);
 
-    dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2);
+    dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
