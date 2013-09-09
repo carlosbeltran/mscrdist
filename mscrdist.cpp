@@ -210,6 +210,16 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     copy(matching.begin(), matching.end(), std::ostream_iterator<float>(cout, " "));
     cout << endl;
 
+    // Compute final distance y
+    //%final_dist_y(i,j)  = sum(dist_y2(useful_i))/max_useful_info;
+    float final_dist_sum = 0;
+    float final_dist_y = 0;
+    for (int col = 0; col < max_useful_info; col++)
+        final_dist_sum = final_dist_sum + dist_y2.at<float>(matching.at(col),col);
+    // Final_dist_y matrix should be passed as argument to this function.
+    //final_dist_y.at<float>(i,j) = final_dist_sum / max_useful_info;
+    final_dist_y = final_dist_sum / max_useful_info;
+    cout << "Final_dist_y = " << final_dist_y << endl << endl;
 }
 
 int main( int argc, char** argv)
