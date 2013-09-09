@@ -192,6 +192,24 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
             totdist_n.at<float>(row,col) = (gamma*dist_y_n.at<float>(row,good.at(col)) + (1 - gamma) * dist_color_n.at<float>(row,good.at(col)));
     cout << "totdist_n = " << endl << " " << totdist_n << endl << endl;
 
+
+    //%%Minimization
+    //%[unused,matching] = min(totdist_n);
+    //tmpmin = 1000 * ones(1,size(totdist_n,2));
+    
+    //Mat tmpmin = Mat(1,totdist_n.cols,Scalar(1000));
+    std::vector<float> tmpmin(totdist_n.cols,1000);
+    std::vector<float> matching(totdist_n.cols,1000);
+    for (int a = 0; a < totdist_n.cols; a++)
+        for (int b = 0; b < totdist_n.rows; b++)
+            if (totdist_n.at<float>(b,a) < tmpmin.at(a)){
+                tmpmin.at(a) = totdist_n.at<float>(b,a);
+                matching.at(a) = b;
+            }
+    cout << "Matching = ";
+    copy(matching.begin(), matching.end(), std::ostream_iterator<float>(cout, " "));
+    cout << endl;
+
 }
 
 int main( int argc, char** argv)
