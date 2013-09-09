@@ -1,3 +1,26 @@
+/*
+ * FILE: 
+ *  mscrdist.cpp
+ *
+ * DESCRIPTION: 
+ *  MSCR distances mapping project.     
+ *
+ * PROJECT:
+ *  ReId Demo
+ *
+ * AUTHORs: 
+ *  Carlos Beltran-Gonzalez.
+ *
+ * VERSION:
+ *      $Id$
+ *
+ * COYRIGHT:
+ *      Copyright (c) 2013 Istituto Italiano di Tecnologia. Genova
+ *
+ * REVISIONS:
+ *      $Log$
+ */
+
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <vector>
@@ -236,11 +259,39 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     cout << "Final_dist_color = " << final_dist_color << endl << endl;
 }
 
-void readmat(const char * filename) {
+void readmat(const char * filename, Mat& _mat) {
 
     ifstream infile;
-    infile.open(filename ,ios::in);
+    int rows = 0;
+    int cols = 0;
 
+    //check size
+    infile.open(filename ,ios::in);
+    while(infile)
+    {
+        string s;
+        vector<float> row;
+        if(!getline(infile,s)) break;
+        istringstream ss(s);
+        rows++;
+
+        cols = 0;
+        while(ss)
+        {
+            string s;
+            if (!getline(ss,s,',')) break;
+            cols++;
+        }
+    }
+
+    _mat = Mat(rows,cols,CV_32FC1);
+    infile.close();
+    infile.open(filename,ios::in);
+    
+    cout << "Creating matrix = " << rows << "X" << cols << endl << endl;
+    rows = 0;
+    cols = 0;
+    // Fill matrix
     while(infile)
     {
         string s;
@@ -254,11 +305,16 @@ void readmat(const char * filename) {
             if (!getline(ss,s,',')) break;
             row.push_back((float)atof(s.c_str()));
         }
-        cout << "-----------------";
+
+        for (cols = 0; cols < row.size();cols++)
+            _mat.at<float>(rows,cols) = row.at(cols); 
+
         copy(row.begin(), row.end(), std::ostream_iterator<float>(cout, " "));
-        cout << "-----------------";
         cout << endl << endl;
+        rows++;
+
     }
+    infile.close();
 }
 
 int main( int argc, char** argv)
@@ -277,11 +333,16 @@ int main( int argc, char** argv)
         98.0625,74.2500,89.4348,111.8947,82.0238,103.6400,80.8000,100.0789,83.4091,
         81.6056,99.6842,97.7879,76.0625,78.0827,103.0000,111.9375,111.8750,111.1667,
         63.9474,63.2949,64.8444 };
-    Mat blobPos_1(1,39,CV_32FC1,&sz);
+    //Mat blobPos_1(1,39,CV_32FC1,&sz);
+    //cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
+
+    Mat blobPos_1_;
+    readmat("test.txt", blobPos_1_);
+    cout << "matrix " << endl << " " << blobPos_1_ << endl << endl;
+
+    Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
     cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
-
-    readmat("test.txt");
-
+    //
     float sz2[54] = { 27.7,26.2,22.47445,44.625,44.5,30.88889,37.95455,44.72093,30.87097,37.975,
         39.33333,33.5625,43.72973,45.6,33.40426,34.89655,37.88235,43.36735,49.65385,
         94.25,86.15789,94.11594,77.92308,53,89.19792,65.15789,85.68098,111.3529,
