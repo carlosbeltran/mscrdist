@@ -220,6 +220,17 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     //final_dist_y.at<float>(i,j) = final_dist_sum / max_useful_info;
     final_dist_y = final_dist_sum / max_useful_info;
     cout << "Final_dist_y = " << final_dist_y << endl << endl;
+
+    // Compute final distance_color
+
+    //%final_dist_color(i,j) = sum(dist_color2(useful_i))/max_useful_info;
+    float final_dist_color_sum = 0;
+    float final_dist_color = 0;
+    for (int col = 0; col < max_useful_info; col++)
+        final_dist_color_sum = final_dist_color_sum + dist_color2.at<float>(matching.at(col),col);
+    //final_dist_color.at<float>(i,j) = final_dist_color_sum / max_useful_info;
+    final_dist_color = final_dist_color_sum / max_useful_info;
+    cout << "Final_dist_color = " << final_dist_color << endl << endl;
 }
 
 int main( int argc, char** argv)
