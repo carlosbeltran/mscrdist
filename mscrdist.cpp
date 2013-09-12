@@ -52,7 +52,6 @@ float f(float t) {
 }
 
 void rgb2lab(Mat & rgbmat) {
-    vector<float> rgb;
 
     float mat[9] = {
         0.4361, 0.3851, 0.1431,
@@ -60,38 +59,46 @@ void rgb2lab(Mat & rgbmat) {
         0.0139, 0.0971, 0.7141};
     Mat M(3,3,CV_32FC1,&mat);
 
-    rgb.push_back(invgamma(rgbmat.at<float>(0,0)));
-    rgb.push_back(invgamma(rgbmat.at<float>(1,0)));
-    rgb.push_back(invgamma(rgbmat.at<float>(2,0)));
-    cout << " Rgb = ";
-    copy(rgb.begin(), rgb.end(), std::ostream_iterator<float>(cout, " "));
-    cout << endl;
+    int i = 0;
+    for ( int i = 0; i < rgbmat.cols;i++) {
+        vector<float> rgb;
+        rgb.push_back(invgamma(rgbmat.at<float>(0,i)));
+        rgb.push_back(invgamma(rgbmat.at<float>(1,i)));
+        rgb.push_back(invgamma(rgbmat.at<float>(2,i)));
+        //cout << " Rgb = ";
+        //copy(rgb.begin(), rgb.end(), std::ostream_iterator<float>(cout, " "));
+        //cout << endl;
 
-    Mat RGB = Mat::zeros(3,1,CV_32FC1);
-    RGB.at<float>(0,0) = rgb.at(0);
-    RGB.at<float>(1,0) = rgb.at(1);
-    RGB.at<float>(2,0) = rgb.at(2);
+        Mat RGB = Mat::zeros(3,1,CV_32FC1);
+        RGB.at<float>(0,0) = rgb.at(0);
+        RGB.at<float>(1,0) = rgb.at(1);
+        RGB.at<float>(2,0) = rgb.at(2);
 
-    Mat XYZ =  M * RGB;
-    cout << "XYZ = " << XYZ;
-    float X,Y,Z;
-    X = XYZ.at<float>(0,0) / 0.9642;
-    Y = XYZ.at<float>(1,0);
-    Z = XYZ.at<float>(2,0) / 0.8251;
-    cout << "X = " << X;
-    cout << "Y = " << Y;
-    cout << "Z = " << Z;
-    cout << endl << endl;
+        Mat XYZ =  M * RGB;
+        //cout << "XYZ = " << XYZ;
+        float X,Y,Z;
+        X = XYZ.at<float>(0,0) / 0.9642;
+        Y = XYZ.at<float>(1,0);
+        Z = XYZ.at<float>(2,0) / 0.8251;
+        //cout << "X = " << X;
+        //cout << "Y = " << Y;
+        //cout << "Z = " << Z;
+        //cout << endl << endl;
 
-    float L,a,b;
-    if ( Y > 0.008856)
-        L = 116.0 * pow(Y,(1.0/3.0)) - 16.0;
-    else
-        L = 903.3 * Y;
+        float L,a,b;
+        if ( Y > 0.008856)
+            L = 116.0 * pow(Y,(1.0/3.0)) - 16.0;
+        else
+            L = 903.3 * Y;
 
-    a = 500.0 * (f(X) - f(Y));
-    b = 200.0 * (f(Y) - f(Z));
-    cout << "Lab = " << L << " " << a << " " << b << endl << endl;
+        a = 500.0 * (f(X) - f(Y));
+        b = 200.0 * (f(Y) - f(Z));
+        //cout << "Lab = " << L << " " << a << " " << b << endl << endl;
+
+        rgbmat.at<float>(0,i) = L;
+        rgbmat.at<float>(1,i) = a;
+        rgbmat.at<float>(2,i) = b;
+    }
 }
 
 float matmax(const Mat &themat) {
@@ -349,7 +356,7 @@ void readmat(const char * filename, Mat& _mat) {
     infile.close();
     infile.open(filename,ios::in);
     
-    cout << "Creating matrix = " << rows << "X" << cols << endl << endl;
+    //cout << "Creating matrix = " << rows << "X" << cols << endl << endl;
     rows = 0;
     cols = 0;
     // Fill matrix
@@ -370,8 +377,8 @@ void readmat(const char * filename, Mat& _mat) {
         for (cols = 0; cols < row.size();cols++)
             _mat.at<float>(rows,cols) = row.at(cols); 
 
-        copy(row.begin(), row.end(), std::ostream_iterator<float>(cout, " "));
-        cout << endl << endl;
+        //copy(row.begin(), row.end(), std::ostream_iterator<float>(cout, " "));
+        //cout << endl << endl;
         rows++;
 
     }
@@ -428,12 +435,12 @@ int main( int argc, char** argv)
     //Mat blobCol_1(3,39,CV_32FC1,&sz3);
     ////cout << "blobCol1 " << endl << " " << blobCol_1 << endl << endl;
 
-    Mat blobCol_1_;
-    readmat("./gtdata/mscrpvec_00001.txt", blobCol_1_);
-    rgb2lab(blobCol_1_);
+    Mat blobCol_1;
+    readmat("./gtdata/mscrpvec_00001.txt", blobCol_1);
+    rgb2lab(blobCol_1);
     //Mat blobCol_1; //= Mat(blobCol_1_.rows,blobCol_1.cols,CV_32FC1);
     //cvtColor(blobCol_1_,blobCol_1,CV_RGB2Lab);
-    //cout << "matrix " << endl << " " << blobCol_1 << endl << endl;
+    cout << "matrix " << endl << " " << blobCol_1 << endl << endl;
 
     float sz4[162] ={51.2324,53.385,54.4504,21.0217,32.9396,49.1442,32.4404,
         32.627,48.3246,30.184,30.8174,4.8461,29.1443,28.4019,12.411,10.2674,
