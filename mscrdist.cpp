@@ -60,7 +60,6 @@ void rgb2lab(Mat & rgbmat) {
         0.0139, 0.0971, 0.7141};
     Mat M(3,3,CV_32FC1,&mat);
 
-    //srgb = [0.37922,0.391,0.51082];
     rgb.push_back(invgamma(rgbmat.at<float>(0,0)));
     rgb.push_back(invgamma(rgbmat.at<float>(1,0)));
     rgb.push_back(invgamma(rgbmat.at<float>(2,0)));
@@ -73,11 +72,9 @@ void rgb2lab(Mat & rgbmat) {
     RGB.at<float>(1,0) = rgb.at(1);
     RGB.at<float>(2,0) = rgb.at(2);
 
-    //Mat XYZ = (CRO * M) * RGB;
     Mat XYZ =  M * RGB;
     cout << "XYZ = " << XYZ;
     float X,Y,Z;
-    //xyz = Cro * m * rgb';
     X = XYZ.at<float>(0,0) / 0.9642;
     Y = XYZ.at<float>(1,0);
     Z = XYZ.at<float>(2,0) / 0.8251;
@@ -85,28 +82,16 @@ void rgb2lab(Mat & rgbmat) {
     cout << "Y = " << Y;
     cout << "Z = " << Z;
     cout << endl << endl;
-    //X = xyz(1) / 0.9642;
-    //Y = xyz(2);
-    //Z = xyz(3) / 0.8251;
 
     float L,a,b;
     if ( Y > 0.008856)
         L = 116.0 * pow(Y,(1.0/3.0)) - 16.0;
     else
         L = 903.3 * Y;
-    //if Y > 0.008856
-    //    L = 116 * Y^(1/3) - 16.0;
-    //else
-    //    L = 903.3 * Y;
-    //end
 
-    //    delta = 0; % for floating point images
     a = 500.0 * (f(X) - f(Y));
     b = 200.0 * (f(Y) - f(Z));
     cout << "Lab = " << L << " " << a << " " << b << endl << endl;
-    //    a = 500*(f(X) - f(Y)) + delta;
-    //b = 200*(f(Y) - f(Z)) + delta;
-    //Lab = [L a b];
 }
 
 float matmax(const Mat &themat) {
