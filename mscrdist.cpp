@@ -37,7 +37,7 @@ using namespace std;
 
 float invgamma(float Rp) {
     float R = 0.0;
-    if ( Rp <= 0.03928 )
+    if ( Rp <= 0.04045 )
         R = Rp/12.92;
     else
         R = pow(((Rp + 0.055)/1.055),2.4);
@@ -49,7 +49,7 @@ float f(float t) {
     if (t > 0.008856)
         result = pow(t,(1.0/3.0));
     else
-        result = 7.787 * t + (16/116);
+        result = 7.787 * t + (16.0/116.0);
     return result;
 }
 
@@ -59,12 +59,6 @@ void rgb2lab(Mat & rgbmat) {
         0.4361, 0.3851, 0.1431,
         0.2225, 0.7169, 0.0606, 
         0.0139, 0.0971, 0.7141};
-
-    //Sacred by hand
-    //float mat[9] = {
-    //    0.436113, 0.3851462, 0.14303300, 
-    //    0.2224733, 0.716878, 0.060600, 
-    //    0.013879, 0.09710, 0.7141};
 
     Mat M(3,3,CV_32FC1,&mat);
 
@@ -333,6 +327,7 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
         final_dist_color_sum = final_dist_color_sum + dist_color2.at<float>(matching.at(col),col);
     //final_dist_color.at<float>(i,j) = final_dist_color_sum / max_useful_info;
     final_dist_color = final_dist_color_sum / max_useful_info;
+    fprintf(stdout," %.20f %.20f \n",final_dist_y,final_dist_color);
     cout << "Final_dist_color = " << final_dist_color << endl << endl;
 }
 
@@ -425,20 +420,20 @@ int main( int argc, char** argv)
     Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
     //cout << "blobPos_2 = " << endl << " " << blobPos_2 << endl << endl;
 
-    Mat blobCol_1(3,39,CV_32FC1,&sz3);
-    cout << "blobCol1 " << endl << " " << blobCol_1 << endl << endl;
+    //Mat blobCol_1(3,39,CV_32FC1,&sz3);
+    //cout << "blobCol1 " << endl << " " << blobCol_1 << endl << endl;
 
-    //Mat blobCol_1;
-    //readmat("./gtdata/mscrpvec_00001.txt", blobCol_1);
-    //rgb2lab(blobCol_1);
-    //cout << "bloblCol2" << endl << " " << blobCol_1 << endl << endl;
+    Mat blobCol_1;
+    readmat("./gtdata/mscrpvec_00001.txt", blobCol_1);
+    rgb2lab(blobCol_1);
+    cout << "bloblCol_1" << endl << " " << blobCol_1 << endl << endl;
 
-    Mat blobCol_2(3,54,CV_32FC1,&sz4);
+    //Mat blobCol_2(3,54,CV_32FC1,&sz4);
     
-    //Mat blobCol_2;
-    //readmat("./gtdata/mscrpvec_00002.txt", blobCol_2);
-    //rgb2lab(blobCol_2);
-    //cout << "blobCol_2 " << endl << " " << blobCol_2 << endl << endl;
+    Mat blobCol_2;
+    readmat("./gtdata/mscrpvec_00002.txt", blobCol_2);
+    rgb2lab(blobCol_2);
+    cout << "blobCol_2 " << endl << " " << blobCol_2 << endl << endl;
 
     dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
 
