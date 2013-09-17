@@ -408,21 +408,26 @@ int main( int argc, char** argv)
 
     vector<MSCR> mscr_vec(2);
 
-    Mat blobPos_1_;
-    readmat("./gtdata/mscrmvec_00001.txt", blobPos_1_);
-    Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
-    mscr_vec.at(0).blobPos = blobPos_1.clone();
+    for (int i = 0; i < 2; i++) {
+        char buf[100];
+        sprintf(buf,"./gtdata/mscrmvec_%05d.txt",i+1);
+        Mat blobPos_1_;
+        readmat(buf, blobPos_1_);
+        Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,blobPos_1_.cols));
+        mscr_vec.at(i).blobPos = blobPos_1.clone();
+
+        sprintf(buf,"./gtdata/mscrpvec_%05d.txt",i+1);
+        readmat(buf, mscr_vec.at(i).blobColor);
+        rgb2lab(mscr_vec.at(i).blobColor);
+    }
     
-    Mat blobPos_2_;
-    readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
-    Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
-    mscr_vec.at(1).blobPos = blobPos_2.clone();
+    //Mat blobPos_2_;
+    //readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
+    //Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
+    //mscr_vec.at(1).blobPos = blobPos_2.clone();
 
-    readmat("./gtdata/mscrpvec_00001.txt", mscr_vec.at(0).blobColor);
-    rgb2lab(mscr_vec.at(0).blobColor);
-
-    readmat("./gtdata/mscrpvec_00002.txt", mscr_vec.at(1).blobColor);
-    rgb2lab(mscr_vec.at(1).blobColor);
+    //readmat("./gtdata/mscrpvec_00002.txt", mscr_vec.at(1).blobColor);
+    //rgb2lab(mscr_vec.at(1).blobColor);
 
     //dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
     dist(mscr_vec.at(0).blobPos,
