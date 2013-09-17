@@ -408,26 +408,31 @@ int main( int argc, char** argv)
 
     MSCR mscr1;
     MSCR mscr2;
+    vector<MSCR> mscr_vec(2);
 
     Mat blobPos_1_;
     readmat("./gtdata/mscrmvec_00001.txt", blobPos_1_);
     Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
-    mscr1.blobPos = blobPos_1.clone();
+    //mscr1.blobPos = blobPos_1.clone();
+    mscr_vec.at(0).blobPos = blobPos_1.clone();
     
     Mat blobPos_2_;
     readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
     Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
-    mscr2.blobPos = blobPos_2.clone();
+    //mscr2.blobPos = blobPos_2.clone();
+    mscr_vec.at(1).blobPos = blobPos_2.clone();
 
     readmat("./gtdata/mscrpvec_00001.txt", mscr1.blobColor);
     rgb2lab(mscr1.blobColor);
-    Mat blobCol_2;
-    readmat("./gtdata/mscrpvec_00002.txt", blobCol_2);
-    rgb2lab(blobCol_2);
-    cout << "blobCol_2 " << endl << " " << blobCol_2 << endl << endl;
+
+    readmat("./gtdata/mscrpvec_00002.txt", mscr2.blobColor);
+    rgb2lab(mscr2.blobColor);
 
     //dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
-    dist(mscr1.blobPos,mscr2.blobPos, mscr1.blobColor, blobCol_2, 0.4);
+    dist(mscr_vec.at(0).blobPos,
+         mscr_vec.at(1).blobPos, 
+         mscr1.blobColor, 
+         mscr2.blobColor, 0.4);
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
