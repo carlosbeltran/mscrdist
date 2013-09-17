@@ -389,6 +389,12 @@ void readmat(const char * filename, Mat& _mat) {
     infile.close();
 }
 
+class MSCR {
+public:
+    Mat blobPos;
+    Mat blobColor;
+};
+
 int main( int argc, char** argv)
 {
     Mat image;
@@ -400,23 +406,20 @@ int main( int argc, char** argv)
         return -1;
     }
 
+    MSCR mscr1;
+    MSCR mscr2;
+
     Mat blobPos_1_;
     readmat("./gtdata/mscrmvec_00001.txt", blobPos_1_);
     //cout << "matrix " << endl << " " << blobPos_1_ << endl << endl;
     Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
+    mscr1.blobPos = blobPos_1.clone();
     //cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
     
-    //float sz2[54] = { 27.7,26.2,22.47445,44.625,44.5,30.88889,37.95455,44.72093,30.87097,37.975,
-    //    39.33333,33.5625,43.72973,45.6,33.40426,34.89655,37.88235,43.36735,49.65385,
-    //    94.25,86.15789,94.11594,77.92308,53,89.19792,65.15789,85.68098,111.3529,
-    //    117.4444,53.89655,61,116.5926,114.5217,57.9375,64.47059,52.27778,110.4375,
-    //    54.5625,58.58824,56.03401,51.27778,54.10317,65.41176,65.64151,65.64179,
-    //    58.32244,124,64.5,51.61905,72.84615,54.12963,69.75,71.68478,75.75069 };
-   //Mat blobPos_2(1,54,CV_32FC1,&sz2);
-
     Mat blobPos_2_;
     readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
     Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
+    mscr2.blobPos = blobPos_1.clone();
     //cout << "blobPos_2 = " << endl << " " << blobPos_2 << endl << endl;
 
     //Mat blobCol_1(3,39,CV_32FC1,&sz3);
@@ -434,7 +437,8 @@ int main( int argc, char** argv)
     rgb2lab(blobCol_2);
     cout << "blobCol_2 " << endl << " " << blobCol_2 << endl << endl;
 
-    dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
+    //dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
+    dist(mscr1.blobPos,blobPos_2, blobCol_1, blobCol_2, 0.4);
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
