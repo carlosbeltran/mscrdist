@@ -405,7 +405,6 @@ int main( int argc, char** argv)
     //cout << "matrix " << endl << " " << blobPos_1_ << endl << endl;
     Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
     //cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
-
     
     //float sz2[54] = { 27.7,26.2,22.47445,44.625,44.5,30.88889,37.95455,44.72093,30.87097,37.975,
     //    39.33333,33.5625,43.72973,45.6,33.40426,34.89655,37.88235,43.36735,49.65385,
