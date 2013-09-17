@@ -35,6 +35,12 @@
 using namespace cv;
 using namespace std;
 
+class MSCR {
+public:
+    Mat blobPos;
+    Mat blobColor;
+};
+
 float invgamma(float Rp) {
     float R = 0.0;
     if ( Rp <= 0.04045 )
@@ -114,13 +120,18 @@ float matmax(const Mat &themat) {
     return value;
 }
 
-void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamma) {
+//void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamma) {
+void dist(vector<MSCR>& mscrvec,float gamma) {
 
     int lenDATAF = 0;
     int i = 1;
     int j = 2;
     int num1,num2;
 
+    Mat &blobPos1 = mscrvec.at(0).blobPos;
+    Mat &blobPos2 = mscrvec.at(1).blobPos;
+    Mat &blobCol1 = mscrvec.at(0).blobColor;
+    Mat &blobCol2 = mscrvec.at(1).blobColor;
     //cout << "Printing array results" << endl;
     //cout << "blobPos = " << endl << " " << blobPos1 << endl << endl;
     //cout << "blobPos = " << endl << " " << blobPos2 << endl << endl;
@@ -389,11 +400,6 @@ void readmat(const char * filename, Mat& _mat) {
     infile.close();
 }
 
-class MSCR {
-public:
-    Mat blobPos;
-    Mat blobColor;
-};
 
 int main( int argc, char** argv)
 {
@@ -420,20 +426,13 @@ int main( int argc, char** argv)
         readmat(buf, mscr_vec.at(i).blobColor);
         rgb2lab(mscr_vec.at(i).blobColor);
     }
-    
-    //Mat blobPos_2_;
-    //readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
-    //Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
-    //mscr_vec.at(1).blobPos = blobPos_2.clone();
-
-    //readmat("./gtdata/mscrpvec_00002.txt", mscr_vec.at(1).blobColor);
-    //rgb2lab(mscr_vec.at(1).blobColor);
 
     //dist(blobPos_1,blobPos_2, blobCol_1, blobCol_2, 0.4);
-    dist(mscr_vec.at(0).blobPos,
-         mscr_vec.at(1).blobPos, 
-         mscr_vec.at(0).blobColor, 
-         mscr_vec.at(1).blobColor,0.4);
+    //dist(mscr_vec.at(0).blobPos,
+    //     mscr_vec.at(1).blobPos, 
+    //     mscr_vec.at(0).blobColor, 
+    //     mscr_vec.at(1).blobColor,0.4);
+    dist(mscr_vec, 0.4);
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
