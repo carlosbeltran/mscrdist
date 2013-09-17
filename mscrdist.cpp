@@ -121,22 +121,22 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     int j = 2;
     int num1,num2;
 
-    cout << "Printing array results" << endl;
-    cout << "blobPos = " << endl << " " << blobPos1 << endl << endl;
-    cout << "blobPos = " << endl << " " << blobPos2 << endl << endl;
+    //cout << "Printing array results" << endl;
+    //cout << "blobPos = " << endl << " " << blobPos1 << endl << endl;
+    //cout << "blobPos = " << endl << " " << blobPos2 << endl << endl;
 
-    cout << "blobPos1 size " << blobPos1.size() << endl;
-    cout << "blobPos2 size " << blobPos2.size() << endl;
-    
-    cout << "Printing array results" << endl;
-    cout << "blobCol = " << endl << " " << blobCol1 << endl << endl;
-    cout << "blobCol = " << endl << " " << blobCol2 << endl << endl;
+    //cout << "blobPos1 size " << blobPos1.size() << endl;
+    //cout << "blobPos2 size " << blobPos2.size() << endl;
+    //
+    //cout << "Printing array results" << endl;
+    //cout << "blobCol = " << endl << " " << blobCol1 << endl << endl;
+    //cout << "blobCol = " << endl << " " << blobCol2 << endl << endl;
 
-    cout << "blobCol1 size " << blobCol1.size() << endl;
-    cout << "blobCol2 size " << blobCol2.size() << endl;
+    //cout << "blobCol1 size " << blobCol1.size() << endl;
+    //cout << "blobCol2 size " << blobCol2.size() << endl;
 
     lenDATAF = blobPos1.cols + blobPos2.cols;
-    cout << "lenDATAF = " << lenDATAF << endl;
+    //cout << "lenDATAF = " << lenDATAF << endl;
 
     num1 = blobPos1.cols;
     num2 = blobPos2.cols;
@@ -150,7 +150,7 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
             dist_y.at<float>(b,a) = abs(blobPos1.at<float>(0,a) - blobPos2.at<float>(0,b));
         }
     }
-    cout << "Dist_y = " << endl << " " << dist_y << endl << endl;
+    //cout << "Dist_y = " << endl << " " << dist_y << endl << endl;
 
     //%Sxx1 = sum(blobCol{1}.^2,1);
     //Mat Sxx = Mat::zeros(1,num1,CV_32FC1);
@@ -159,9 +159,9 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
         for (int b = 0; b < blobCol1.rows; b++)
             Sxx.at(a) = Sxx.at(a) + pow(blobCol1.at<float>(b,a),2);
     //cout << "Sxx = " << endl << " " << Sxx << endl << endl;
-    cout << " Sxx = ";
-    copy(Sxx.begin(), Sxx.end(), std::ostream_iterator<float>(cout, " "));
-    cout << endl;
+    //cout << " Sxx = ";
+    //copy(Sxx.begin(), Sxx.end(), std::ostream_iterator<float>(cout, " "));
+    //cout << endl;
 
     //%Sxx1 = sum(blobCol{1}.^2,1);
     //Mat Syy = Mat::zeros(1,num2,CV_32FC1);
@@ -170,9 +170,9 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
         for (int b = 0; b < blobCol2.rows; b++)
             Syy.at(a) = Syy.at(a) + pow(blobCol2.at<float>(b,a),2);
     //cout << "Syy = " << endl << " " << Syy << endl << endl;
-    cout << "Syy = ";
-    copy(Syy.begin(), Syy.end(), std::ostream_iterator<float>(cout, " "));
-    cout << endl;
+    //cout << "Syy = ";
+    //copy(Syy.begin(), Syy.end(), std::ostream_iterator<float>(cout, " "));
+    //cout << endl;
 
     //%Sxy = blobCol{1}' * blobCol{2};
     Mat blobCol1_t = Mat::zeros(blobCol1.cols,blobCol1.rows,CV_32FC1);
@@ -197,9 +197,9 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
             if (dist_y.at<float>(b,a) < ref_y.at(a))
                 ref_y.at(a) = dist_y.at<float>(b,a);
     //cout << "ref_y = " << endl << " " << ref_y << endl << endl;
-    cout << " ref_y = ";
-    copy(ref_y.begin(), ref_y.end(), std::ostream_iterator<float>(cout, " "));
-    cout << endl;
+    //cout << " ref_y = ";
+    //copy(ref_y.begin(), ref_y.end(), std::ostream_iterator<float>(cout, " "));
+    //cout << endl;
 
     // Get the mean of the min array
     // %me_ref_y = mean(ref_y);
@@ -207,7 +207,7 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     float me_ref_y = sum / ref_y.size();
     //Scalar me_ref_y_sca = mean(ref_y);
     //float me_ref_y = me_ref_y_sca.val[0];
-    cout << "Mean = " << me_ref_y << endl;
+    //cout << "Mean = " << me_ref_y << endl;
     //Expected ground trouth = 1.6005
 
     // Get the standard deviation of the min array
@@ -217,7 +217,7 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
         std_ref_y = std_ref_y + pow((ref_y.at(a) - me_ref_y),2);
     std_ref_y = std_ref_y / (ref_y.size() - 1);
     std_ref_y = pow(std_ref_y,0.5);
-    cout << "Std = " << std_ref_y << endl;
+    //cout << "Std = " << std_ref_y << endl;
     // Expected ground trouth = 2.0263
 
     //Color statistics 
@@ -258,13 +258,13 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     for (int col = 0; col < max_useful_info; col++)
         for (int row = 0; row < num2; row++)
             dist_y2.at<float>(row,col) = dist_y.at<float>(row,good.at(col));
-    cout << "Dist_y2 = " << endl << " " << dist_y2 << endl << endl;
+    //cout << "Dist_y2 = " << endl << " " << dist_y2 << endl << endl;
 
     Mat dist_color2 = Mat(num2,max_useful_info,CV_32FC1);
     for (int col = 0; col < max_useful_info; col++)
         for (int row = 0; row < num2; row++)
             dist_color2.at<float>(row,col) = dist_color.at<float>(row,good.at(col));
-    cout << "Dist_color2 = " << endl << " " << dist_color2 << endl << endl;
+    //cout << "Dist_color2 = " << endl << " " << dist_color2 << endl << endl;
     // Normalize
 
     float DEN1;
@@ -273,21 +273,21 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
     else
         DEN1 = matmax(dist_y2);
     Mat dist_y_n = dist_y / DEN1;
-    cout << "dist_y_n = " << endl << " " << dist_y_n << endl << endl;
+    //cout << "dist_y_n = " << endl << " " << dist_y_n << endl << endl;
 
     if (dist_color2.cols == 0)
         DEN1 = 1;
     else 
         DEN1 = matmax(dist_color2);
     Mat dist_color_n = dist_color / DEN1;
-    cout << "dist_color_n = " << endl << " " << dist_color_n << endl << endl;
+    //cout << "dist_color_n = " << endl << " " << dist_color_n << endl << endl;
 
     //Composite distance computation
     Mat totdist_n = Mat(num2,max_useful_info,CV_32FC1);
     for (int col = 0; col< max_useful_info; col++)
         for (int row = 0; row < num2; row++)
             totdist_n.at<float>(row,col) = (gamma*dist_y_n.at<float>(row,good.at(col)) + (1 - gamma) * dist_color_n.at<float>(row,good.at(col)));
-    cout << "totdist_n = " << endl << " " << totdist_n << endl << endl;
+    //cout << "totdist_n = " << endl << " " << totdist_n << endl << endl;
 
 
     //%%Minimization
@@ -303,9 +303,9 @@ void dist(Mat &blobPos1, Mat &blobPos2, Mat &blobCol1, Mat &blobCol2, float gamm
                 tmpmin.at(a) = totdist_n.at<float>(b,a);
                 matching.at(a) = b;
             }
-    cout << "Matching = ";
-    copy(matching.begin(), matching.end(), std::ostream_iterator<float>(cout, " "));
-    cout << endl;
+    //cout << "Matching = ";
+    //copy(matching.begin(), matching.end(), std::ostream_iterator<float>(cout, " "));
+    //cout << endl;
 
     // Compute final distance y
     //%final_dist_y(i,j)  = sum(dist_y2(useful_i))/max_useful_info;
