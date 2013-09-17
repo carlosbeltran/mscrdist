@@ -411,27 +411,16 @@ int main( int argc, char** argv)
 
     Mat blobPos_1_;
     readmat("./gtdata/mscrmvec_00001.txt", blobPos_1_);
-    //cout << "matrix " << endl << " " << blobPos_1_ << endl << endl;
     Mat blobPos_1(blobPos_1_,cv::Range(2,3),cv::Range(0,39));
     mscr1.blobPos = blobPos_1.clone();
-    //cout << "blobPos_1 = " << endl << " " << blobPos_1 << endl << endl;
     
     Mat blobPos_2_;
     readmat("./gtdata/mscrmvec_00002.txt", blobPos_2_);
     Mat blobPos_2(blobPos_2_,cv::Range(2,3),cv::Range(0,54));
     mscr2.blobPos = blobPos_2.clone();
-    //cout << "blobPos_2 = " << endl << " " << blobPos_2 << endl << endl;
 
-    //Mat blobCol_1(3,39,CV_32FC1,&sz3);
-    //cout << "blobCol1 " << endl << " " << blobCol_1 << endl << endl;
-
-    //Mat blobCol_1;
     readmat("./gtdata/mscrpvec_00001.txt", mscr1.blobColor);
     rgb2lab(mscr1.blobColor);
-    //cout << "bloblCol_1" << endl << " " << blobCol_1 << endl << endl;
-
-    //Mat blobCol_2(3,54,CV_32FC1,&sz4);
-    
     Mat blobCol_2;
     readmat("./gtdata/mscrpvec_00002.txt", blobCol_2);
     rgb2lab(blobCol_2);
