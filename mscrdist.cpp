@@ -417,9 +417,9 @@ int main( int argc, char** argv)
         return -1;
     }
 
-    vector<MSCR> mscr_vec(4);
+    vector<MSCR> mscr_vec(100);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 100; i++) {
         char buf[100];
         sprintf(buf,"./gtdata/mscrmvec_%05d.txt",i+1);
         Mat blobPos_1_;
