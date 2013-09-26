@@ -29,6 +29,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <ctime>
 //Get groundtruth matrixes
 #include "cialabcolormatrixesgt.h"
 
@@ -439,9 +440,12 @@ int main( int argc, char** argv)
     //     mscr_vec.at(1).blobColor,0.4);
     Mat final_dist_y;
     Mat final_dist_color;
+    clock_t t0 = clock();
     dist(mscr_vec, final_dist_y, final_dist_color, 0.4);
-    cout  << "Finaldisty = " << endl << final_dist_y << endl;
-    cout  << "Finaldistcolor = " << endl << final_dist_color << endl;
+    float elapsed = float(clock() - t0) / float(CLOCKS_PER_SEC);
+    cout << "Time = " << elapsed << endl;
+    //cout  << "Finaldisty = " << endl << final_dist_y << endl;
+    //cout  << "Finaldistcolor = " << endl << final_dist_color << endl;
 
     namedWindow("Display Image", CV_WINDOW_AUTOSIZE);
     imshow("Display Image", image);
